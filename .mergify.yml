@@ -1,5 +1,5 @@
 merge_queue:
-  mode: isolated
+  mode: serial
 priority_rules:
   - name: vm1-resolver-priority-b
     conditions:
