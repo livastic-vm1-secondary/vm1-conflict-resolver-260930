@@ -1,22 +1,16 @@
 merge_queue:
-  mode: serial
-  max_parallel_checks: 1
-scopes:
-  source:
-    files:
-      ordinary:
-        include:
-          - ordinary/**
-  barrier_files:
-    include:
-      - barrier/**
+  mode: isolated
+  max_parallel_checks: 2
 queue_rules:
-  - name: dynbar
-    queue_conditions: []
+  - name: resolver-isolated
+    queue_conditions:
+      - title ~= ^VM1_CR_ISO_[AB]_261001$
     merge_conditions:
-      - check-success = vm1-dynbar-hold
-    batch_size:
-      min: 1
-      max: 2
+      - check-success = vm1-conflict-hold
+    batch_size: 2
     batch_max_wait_time: 1 minute
     merge_method: merge-batch
+    conflict_resolvers:
+      - paths:
+          - conflict.txt
+        strategy: prefer-theirs
