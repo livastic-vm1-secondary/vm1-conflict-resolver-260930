@@ -1,0 +1,10 @@
+queue_rules:
+  - name: resolver
+    queue_conditions: []
+    merge_conditions: []
+    batch_size: 2
+    merge_method: merge-batch
+    conflict_resolvers:
+      - paths:
+          - conflict.txt
+        strategy: prefer-theirs
