@@ -1,3 +1,5 @@
+merge_queue:
+  mode: isolated
 queue_rules:
   - name: resolver
     queue_conditions: []
