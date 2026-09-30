@@ -13,7 +13,7 @@ queue_rules:
       - check-success = vm1-conflict-hold
     batch_size: 2
     batch_max_wait_time: 1 minute
-    merge_method: merge-batch
+    merge_method: fast-forward
     conflict_resolvers:
       - paths:
           - conflict.txt
