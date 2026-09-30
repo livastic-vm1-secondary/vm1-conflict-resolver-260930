@@ -1,12 +1,18 @@
 merge_queue:
   mode: isolated
+priority_rules:
+  - name: vm1-resolver-priority-b
+    conditions:
+      - label = vm1-resolver-priority-b
+    priority: high
+    allow_checks_interruption: true
 queue_rules:
   - name: resolver
     queue_conditions: []
     merge_conditions:
       - check-success = vm1-conflict-hold
     batch_size: 2
-    batch_max_wait_time: 5 minutes
+    batch_max_wait_time: 1 minute
     merge_method: merge-batch
     conflict_resolvers:
       - paths:
