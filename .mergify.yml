@@ -3,6 +3,7 @@ queue_rules:
     queue_conditions: []
     merge_conditions: []
     batch_size: 2
+    batch_max_wait_time: 5 minutes
     merge_method: merge-batch
     conflict_resolvers:
       - paths:
