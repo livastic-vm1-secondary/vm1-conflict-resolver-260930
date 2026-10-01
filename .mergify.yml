@@ -21,5 +21,4 @@ queue_rules:
     conflict_resolvers:
       - paths:
           - resolver-rename-protected.txt
-          - resolver-rename-moved.txt
         strategy: ours
