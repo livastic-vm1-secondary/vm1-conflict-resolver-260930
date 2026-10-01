@@ -1,1 +1,7 @@
 extends: vm1-queue-rule-delete-260914
+scopes:
+  source:
+    files:
+      resolver:
+        include:
+          - resolver-generation.txt
