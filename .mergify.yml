@@ -13,14 +13,3 @@ queue_rules:
       - paths:
           - conflict.txt
         strategy: prefer-theirs
-
-pull_request_rules:
-  - name: VM1 stale queue finalizer 261002
-    conditions:
-      - base = main
-      - author = livastic-vm1-secondary
-      - title = VM1_STALE_QUEUE_FINALIZER_261002
-      - check-success = vm1-queue-race-gate
-    actions:
-      queue:
-        name: resolver-ui-261001
