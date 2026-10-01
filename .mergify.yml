@@ -13,3 +13,27 @@ queue_rules:
       - paths:
           - conflict.txt
         strategy: prefer-theirs
+
+pull_request_rules:
+  - name: VM1 stale postcheck race 261002
+    conditions:
+      - base = vm1-postcheck-race-base-261002
+      - author = livastic-vm1-secondary
+      - title = VM1_POSTCHECK_RACE_261002
+      - check-success = vm1-postcheck-race-gate
+    actions:
+      post_check:
+        title: VM1 stale postcheck race canary
+        summary: VM1 controlled stale-head post_check discriminator
+        success_conditions: true
+
+  - name: VM1 stale postcheck protected merge 261002
+    conditions:
+      - base = vm1-postcheck-race-base-261002
+      - author = livastic-vm1-secondary
+      - title = VM1_POSTCHECK_RACE_261002
+      - label = vm1-postcheck-impact-261002
+      - -closed
+    actions:
+      merge:
+        method: squash
