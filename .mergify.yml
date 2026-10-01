@@ -15,11 +15,12 @@ queue_rules:
         strategy: prefer-theirs
 
 pull_request_rules:
-  - name: VM1 closed-review stale-open race 261001
+  - name: VM1 stale-head review race 261001
     conditions:
       - author = livastic-vm1-secondary
-      - title = VM1_CLOSED_REVIEW_MATCH_261001
+      - title = VM1_STALE_HEAD_REVIEW_261001
+      - check-success = vm1-review-race-gate
     actions:
       review:
         type: APPROVE
-        message: VM1 closed-review stale-open race canary
+        message: VM1 stale-head review race canary
