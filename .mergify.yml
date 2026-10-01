@@ -1,24 +1,15 @@
-scopes:
-  source:
-    files:
-      resolver-rename:
-        include:
-          - resolver-rename-protected.txt
-          - resolver-rename-moved.txt
-
 merge_queue:
-  mode: parallel
-  max_parallel_checks: 2
+  mode: serial
+  max_parallel_checks: 1
 queue_rules:
-  - name: vm1-resolver-rename-261002
-    queue_conditions:
-      - base = main
+  - name: resolver-ui-261001
+    queue_conditions: []
     merge_conditions:
-      - check-success = vm1-resolver-rename-never
+      - check-success = vm1-conflict-ui-hold
     batch_size: 2
     batch_max_wait_time: 1 minute
     merge_method: merge-batch
     conflict_resolvers:
       - paths:
-          - resolver-rename-protected.txt
-        strategy: ours
+          - conflict.txt
+        strategy: prefer-theirs
