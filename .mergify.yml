@@ -1,3 +1,11 @@
+scopes:
+  source:
+    files:
+      resolver-rename:
+        include:
+          - resolver-rename-protected.txt
+          - resolver-rename-moved.txt
+
 merge_queue:
   mode: parallel
   max_parallel_checks: 2
