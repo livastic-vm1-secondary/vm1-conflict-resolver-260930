@@ -15,23 +15,23 @@ queue_rules:
         strategy: prefer-theirs
 
 pull_request_rules:
-  - name: VM1 stale-review main approval 261001
+  - name: VM1 stale-review main approval 261001 v2
     conditions:
       - base = main
       - author = livastic-vm1-secondary
-      - title = VM1_STALE_REVIEW_MAIN_CHAIN_261001
+      - title = VM1_STALE_REVIEW_MAIN_CHAIN_V2_261001
       - check-success = vm1-review-race-gate
     actions:
       review:
         type: APPROVE
-        message: VM1 stale-review main-chain approval canary
+        message: VM1 stale-review main-chain approval canary v2
 
-  - name: VM1 stale-review main merge 261001
+  - name: VM1 stale-review main merge 261001 v2
     conditions:
       - base = main
       - author = livastic-vm1-secondary
-      - title = VM1_STALE_REVIEW_MAIN_CHAIN_261001
-      - closed = false
+      - title = VM1_STALE_REVIEW_MAIN_CHAIN_V2_261001
+      - -closed
       - approved-reviews-by = mergify[bot]
     actions:
       merge:
