@@ -13,12 +13,3 @@ queue_rules:
       - paths:
           - conflict.txt
         strategy: prefer-theirs
-
-  - name: vm1-rule-removal-queue-261002
-    queue_conditions:
-      - base = main
-      - title = VM1_RULE_REMOVAL_SYNC_261002
-    merge_conditions:
-      - check-success = vm1-rule-removal-hold
-    batch_size: 1
-    merge_method: squash
