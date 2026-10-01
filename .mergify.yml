@@ -20,11 +20,3 @@ queue_rules:
       max: 2
     batch_max_wait_time: 1 minute
     merge_method: merge-batch
-
-pull_request_rules:
-  - name: VM1 freeze merge action bypass 261001
-    conditions:
-      - title = VM1_FREEZE_MERGE_BYPASS_261001
-    actions:
-      merge:
-        method: merge
