@@ -1,0 +1,15 @@
+name: VM1 Resolver Auto Finalizer
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  vm1-resolver-auto-ci:
+    name: vm1-resolver-auto-ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delayed clean success
+        shell: bash
+        run: |
+          echo "VM1 controlled delayed success"
+          sleep 90
+          echo "VM1 delayed success complete"
