@@ -1,6 +1,7 @@
 merge_queue:
-  mode: serial
-  max_parallel_checks: 1
+  mode: parallel
+  max_parallel_checks: 2
+
 queue_rules:
   - name: resolver-ui-261001
     queue_conditions: []
@@ -13,3 +14,22 @@ queue_rules:
       - paths:
           - conflict.txt
         strategy: prefer-theirs
+
+  - name: vm1-resolver-auto-finalizer-261002
+    queue_conditions:
+      - label = vm1-resolver-auto-261002
+    merge_conditions:
+      - check-success = vm1-resolver-auto-ci
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    merge_method: merge-batch
+    conflict_resolvers:
+      - paths:
+          - resolver-auto-ci.txt
+        strategy: prefer-theirs
+
+merge_protections:
+  - name: vm1-resolver-auto-finalizer-native-gate
+    if:
+      - base = main
+    success_conditions: []
