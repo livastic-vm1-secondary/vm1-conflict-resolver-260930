@@ -1,7 +1,15 @@
-extends: vm1-queue-rule-delete-260914
-scopes:
-  source:
-    files:
-      resolver:
-        include:
-          - resolver-protected-main.txt
+merge_queue:
+  mode: serial
+  max_parallel_checks: 1
+queue_rules:
+  - name: resolver-ui-261001
+    queue_conditions: []
+    merge_conditions:
+      - check-success = vm1-conflict-ui-hold
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    merge_method: merge-batch
+    conflict_resolvers:
+      - paths:
+          - conflict.txt
+        strategy: prefer-theirs
