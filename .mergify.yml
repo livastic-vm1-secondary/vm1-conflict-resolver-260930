@@ -1,4 +1,24 @@
 extends: vm1-queue-rule-delete-260914
+scopes:
+  source:
+    files:
+      crjson:
+        include: []
+queue_rules:
+  - name: vm1-crjson-duparray-261006
+    queue_conditions:
+      - base = vm1-crjson-duparray-base-261006
+      - title ~= ^VM1_CRJSON_DUPARRAY_[AB]_261006$
+    merge_conditions:
+      - check-success = vm1-crjson-duparray-never
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    merge_method: merge-batch
+    conflict_resolvers:
+      - paths:
+          - vm1-crjson-duparray-policy.json
+        strategy: json
+
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
