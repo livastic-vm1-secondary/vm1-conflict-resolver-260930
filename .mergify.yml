@@ -1,4 +1,9 @@
 extends: vm1-queue-rule-delete-260914
+scopes:
+  source:
+    files:
+      crjson:
+        include: []
 queue_rules:
   - name: vm1-crjson-duparray-261006
     queue_conditions:
