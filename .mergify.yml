@@ -1,1 +1,21 @@
-extends: vm1-queue-rule-delete-260914\nmerge_queue:\n  mode: parallel\n  max_parallel_checks: 2\n\nqueue_rules:\n  - name: vm1-crjson-duparray-261006\n    queue_conditions:\n      - base = vm1-crjson-duparray-base-261006\n      - title ~= ^VM1_CRJSON_DUPARRAY_[AB]_261006$\n    merge_conditions:\n      - check-success = vm1-crjson-duparray-never\n    batch_size: 2\n    batch_max_wait_time: 1 minute\n    merge_method: merge-batch\n    conflict_resolvers:\n      - paths:\n          - vm1-crjson-duparray-policy.json\n        strategy: json\n\nmerge_protections:\n  - name: vm1-resolver-auto-finalizer-native-gate\n    if:\n      - base = main\n    success_conditions: []\n
+extends: vm1-queue-rule-delete-260914
+queue_rules:
+  - name: vm1-crjson-duparray-261006
+    queue_conditions:
+      - base = vm1-crjson-duparray-base-261006
+      - title ~= ^VM1_CRJSON_DUPARRAY_[AB]_261006$
+    merge_conditions:
+      - check-success = vm1-crjson-duparray-never
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    merge_method: merge-batch
+    conflict_resolvers:
+      - paths:
+          - vm1-crjson-duparray-policy.json
+        strategy: json
+
+merge_protections:
+  - name: vm1-resolver-auto-finalizer-native-gate
+    if:
+      - base = main
+    success_conditions: []
