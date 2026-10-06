@@ -1,4 +1,22 @@
 extends: vm1-queue-rule-delete-260914
+
+conflict_resolvers:
+  - paths:
+      - pyproject.toml
+      - uv.lock
+    strategy: uv
+
+queue_rules:
+  - name: vm1-uvmarker-261007
+    merge_method: merge-batch
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    queue_conditions:
+      - base = vm1-uvmarker-base-261007
+      - title ~= ^VM1_UVMARKER_[AB]_261007$
+    merge_conditions:
+      - check-success = vm1-uvmarker-never
+
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
