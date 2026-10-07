@@ -46,6 +46,15 @@ queue_rules:
     batch_size: 2
     batch_max_wait_time: 1 minute
     merge_method: merge-batch
+  - name: vm1-pnpm-peer-move-261008
+    queue_conditions:
+      - base = vm1-pnpm-peer-base-261008
+      - title ~= ^VM1_PNPM_PEER_[AB]_261008$
+    merge_conditions:
+      - check-success = vm1-pnpm-peer-never-261008
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    merge_method: merge-batch
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
