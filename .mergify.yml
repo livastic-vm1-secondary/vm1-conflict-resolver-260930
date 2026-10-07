@@ -1,4 +1,36 @@
 extends: vm1-queue-rule-delete-260914
+scopes:
+  source:
+    files:
+      pnpm:
+        include: []
+queue_rules:
+  - name: vm1-pnpm-single-261007
+    queue_conditions:
+      - base = vm1-pnpm-single-base-261007
+      - title ~= ^VM1_PNPM_SINGLE_[AB]_261007$
+    merge_conditions:
+      - check-success = vm1-pnpm-never-261007
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    merge_method: merge-batch
+    conflict_resolvers:
+      - paths:
+          - pnpm-lock.yaml
+        strategy: pnpm
+  - name: vm1-pnpm-multidoc-261007
+    queue_conditions:
+      - base = vm1-pnpm-multidoc-base-261007
+      - title ~= ^VM1_PNPM_MULTIDOC_[AB]_261007$
+    merge_conditions:
+      - check-success = vm1-pnpm-never-261007
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    merge_method: merge-batch
+    conflict_resolvers:
+      - paths:
+          - pnpm-lock.yaml
+        strategy: pnpm
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
