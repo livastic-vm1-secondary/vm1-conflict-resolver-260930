@@ -50,6 +50,7 @@ queue_rules:
     queue_conditions:
       - base = vm1-pnpm-peer-base-261008
       - title ~= ^VM1_PNPM_PEER_[AB]_261008$
+    autoqueue: true
     merge_conditions:
       - check-success = vm1-pnpm-peer-never-261008
     batch_size: 2
