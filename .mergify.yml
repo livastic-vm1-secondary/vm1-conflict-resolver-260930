@@ -26,6 +26,24 @@ queue_rules:
     batch_size: 2
     batch_max_wait_time: 1 minute
     merge_method: merge-batch
+  - name: vm1-pnpm-lockscalar-quoted-261007
+    queue_conditions:
+      - base = vm1-pnpm-lockscalar-q-base-261007
+      - title ~= ^VM1_PNPM_LOCK_Q_[AB]_261007$
+    merge_conditions:
+      - check-success = vm1-pnpm-never-261007
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    merge_method: merge-batch
+  - name: vm1-pnpm-lockscalar-numeric-261007
+    queue_conditions:
+      - base = vm1-pnpm-lockscalar-n-base-261007
+      - title ~= ^VM1_PNPM_LOCK_N_[AB]_261007$
+    merge_conditions:
+      - check-success = vm1-pnpm-never-261007
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    merge_method: merge-batch
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
