@@ -4,6 +4,10 @@ scopes:
     files:
       pnpm:
         include: []
+conflict_resolvers:
+  - paths:
+      - pnpm-lock.yaml
+    strategy: pnpm
 queue_rules:
   - name: vm1-pnpm-single-261007
     queue_conditions:
@@ -14,10 +18,6 @@ queue_rules:
     batch_size: 2
     batch_max_wait_time: 1 minute
     merge_method: merge-batch
-    conflict_resolvers:
-      - paths:
-          - pnpm-lock.yaml
-        strategy: pnpm
   - name: vm1-pnpm-multidoc-261007
     queue_conditions:
       - base = vm1-pnpm-multidoc-base-261007
@@ -27,10 +27,6 @@ queue_rules:
     batch_size: 2
     batch_max_wait_time: 1 minute
     merge_method: merge-batch
-    conflict_resolvers:
-      - paths:
-          - pnpm-lock.yaml
-        strategy: pnpm
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
