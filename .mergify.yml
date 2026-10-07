@@ -3,6 +3,8 @@ scopes:
     files:
       pnpm:
         include: []
+merge_queue:
+  max_parallel_checks: 2
 conflict_resolvers:
   - paths:
       - pnpm-lock.yaml
