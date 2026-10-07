@@ -51,6 +51,3 @@ merge_protections:
     if:
       - base = main
     success_conditions: []
-
-merge_queue:
-  max_parallel_checks: 2
