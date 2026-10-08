@@ -13,6 +13,9 @@ conflict_resolvers:
       - pyproject.toml
       - uv.lock
     strategy: uv
+  - paths:
+      - vm1-crjson-sameinsert-policy.json
+    strategy: json
 queue_rules:
   - name: vm1-pnpm-single-261007
     queue_conditions:
@@ -77,6 +80,16 @@ queue_rules:
     autoqueue: true
     merge_conditions:
       - check-success = vm1-uv-dangling-never-261008
+    batch_size: 2
+    batch_max_wait_time: 5 minutes
+    merge_method: merge-batch
+  - name: vm1-crjson-sameinsert-261008
+    queue_conditions:
+      - base = vm1-crjson-sameinsert-base-261006
+      - title ~= ^VM1_CRJSON_SAMEINSERT_[AB]_261008$
+    autoqueue: true
+    merge_conditions:
+      - check-success = vm1-crjson-sameinsert-never-261008
     batch_size: 2
     batch_max_wait_time: 5 minutes
     merge_method: merge-batch
