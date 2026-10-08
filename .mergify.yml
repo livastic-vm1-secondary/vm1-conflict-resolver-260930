@@ -80,16 +80,6 @@ queue_rules:
     batch_size: 2
     batch_max_wait_time: 5 minutes
     merge_method: merge-batch
-  - name: vm1-pnpm-dualpeer-261008
-    queue_conditions:
-      - base = vm1-pnpm-dualpeer-base-261008
-      - title ~= ^VM1_PNPM_DUALPEER_[AB]_261008$
-    autoqueue: true
-    merge_conditions:
-      - check-success = vm1-pnpm-dualpeer-never-261008
-    batch_size: 2
-    batch_max_wait_time: 5 minutes
-    merge_method: merge-batch
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
