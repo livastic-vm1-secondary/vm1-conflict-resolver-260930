@@ -117,6 +117,16 @@ queue_rules:
     batch_size: 2
     batch_max_wait_time: 5 minutes
     merge_method: merge-batch
+  - name: vm1-pnpm-buildpolicy-261009
+    queue_conditions:
+      - base = vm1-pnpm-buildpolicy-base-261009
+      - title ~= ^VM1_PNPM_BUILDPOLICY_(OWNER_A|B)_261009$
+    autoqueue: true
+    merge_conditions:
+      - check-success = vm1-pnpm-buildpolicy-never-261009
+    batch_size: 2
+    batch_max_wait_time: 5 minutes
+    merge_method: merge-batch
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
