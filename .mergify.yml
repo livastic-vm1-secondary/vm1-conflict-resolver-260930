@@ -80,6 +80,16 @@ queue_rules:
     batch_size: 2
     batch_max_wait_time: 5 minutes
     merge_method: merge-batch
+  - name: vm1-pnpm-catalog-261008
+    queue_conditions:
+      - base = vm1-pnpm-catalog-base-261008
+      - title ~= ^VM1_PNPM_CATALOG_[AB]_261008$
+    autoqueue: true
+    merge_conditions:
+      - check-success = vm1-pnpm-catalog-never-261008
+    batch_size: 2
+    batch_max_wait_time: 3 minutes
+    merge_method: merge-batch
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
