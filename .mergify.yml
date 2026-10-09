@@ -187,12 +187,6 @@ queue_rules:
     batch_max_wait_time: 5 minutes
     merge_method: merge-batch
 
-merge_protections:
-  - name: vm1-resolver-auto-finalizer-native-gate
-    if:
-      - base = main
-    success_conditions: []
-
   - name: vm1-browsermap-policy-261009
     branch_protection_injection_mode: merge
     queue_conditions:
@@ -204,3 +198,9 @@ merge_protections:
     batch_size: 2
     batch_max_wait_time: 5 minutes
     merge_method: merge-batch
+
+merge_protections:
+  - name: vm1-resolver-auto-finalizer-native-gate
+    if:
+      - base = main
+    success_conditions: []
