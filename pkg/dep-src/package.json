@@ -1,0 +1,1 @@
+{"name":"vm1-toolchain-canary","version":"1.0.0","scripts":{"postinstall":"node postinstall.cjs"}}
