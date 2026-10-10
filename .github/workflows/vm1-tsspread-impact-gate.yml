@@ -1,16 +1,27 @@
-name: VM1 TypeScript spread impact gate
+name: VM1 TypeScript spread semantic gate
 on:
   pull_request:
     branches:
       - vm1-tsspread-impact-base-261010
+      - vm1-tsspread-autogate-control-261010
 
 jobs:
   gate:
     name: vm1-tsspread-impact-gate-261010
     runs-on: ubuntu-latest
     steps:
-      - name: Controlled automatic gate
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject review-hardening downgrade
+        shell: bash
         run: |
-          echo "VM1 controlled automatic impact gate"
-          sleep 20
-          echo "VM1 gate complete"
+          git show "${{ github.event.pull_request.base.sha }}:tsimport/main.ts" > /tmp/base-policy.js
+          base_decision="$(node /tmp/base-policy.js)"
+          head_decision="$(node tsimport/main.ts)"
+          echo "BASE_DECISION=$base_decision"
+          echo "HEAD_DECISION=$head_decision"
+          if [[ "$base_decision" == "REVIEW_REQUIRED" && "$head_decision" != "REVIEW_REQUIRED" ]]; then
+            echo "Refusing REVIEW_REQUIRED -> $head_decision downgrade"
+            exit 1
+          fi
