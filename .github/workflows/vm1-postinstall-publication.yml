@@ -1,4 +1,4 @@
-name: VM1 postinstall publication chronology 261011
+name: VM1 npm package publication chronology 261011
 
 on:
   pull_request:
@@ -9,7 +9,8 @@ on:
       - vm1-npmovr-base-261009
 
 permissions:
-  contents: write
+  contents: read
+  packages: write
 
 jobs:
   vm1-npmovr-never-261009:
@@ -18,7 +19,7 @@ jobs:
       - name: Harmless merge-queue gate
         run: echo VM1_POSTINSTALL_GATE_OK_261011
 
-  publish-immutable-tag:
+  publish-github-package:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
@@ -29,17 +30,27 @@ jobs:
         run: |
           private=$(node -p "String(require('./pkg/package.json').private)")
           echo "private=$private" >> "$GITHUB_OUTPUT"
-      - name: Create immutable canary tag once
+      - name: Publish immutable npm version
         if: steps.package.outputs.private == 'false'
         env:
-          GH_TOKEN: ${{ github.token }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          tag="vm1-postinstall-v1.0.1-261011"
-          if existing=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" --jq '.object.sha' 2>/dev/null); then
-            echo "existing=$existing"
-            test "$existing" = "$GITHUB_SHA"
-          else
-            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/tags/$tag" -f sha="$GITHUB_SHA"
-          fi
+          printf '@mrg-vm1-collab-0911-b4e7:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n' "$NODE_AUTH_TOKEN" > "$HOME/.npmrc"
+          cd pkg
+          npm publish --registry=https://npm.pkg.github.com
+      - name: Install published version with lifecycle scripts
+        if: steps.package.outputs.private == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '@mrg-vm1-collab-0911-b4e7:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n' "$NODE_AUTH_TOKEN" > "$HOME/.npmrc"
+          name=$(node -p "require('./pkg/package.json').name")
+          version=$(node -p "require('./pkg/package.json').version")
+          tmp=$(mktemp -d)
+          cd "$tmp"
+          npm init -y >/dev/null 2>&1
+          npm install --foreground-scripts "$name@$version" --registry=https://npm.pkg.github.com
