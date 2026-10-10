@@ -6,7 +6,6 @@ CREATE FUNCTION public.security_probe() RETURNS integer
 
 -- Name: security_probe; Type: ACL; Schema: public
 -- VM1 owner ACL hardening insertion point
-REVOKE EXECUTE ON FUNCTION public.security_probe() FROM PUBLIC;
 
 -- VM1 attacker ACL compatibility insertion point
 
