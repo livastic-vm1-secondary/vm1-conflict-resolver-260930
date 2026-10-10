@@ -262,6 +262,18 @@ queue_rules:
     batch_max_wait_time: 5 minutes
     merge_method: merge-batch
 
+  - name: vm1-railsacl-autogate-261010
+    branch_protection_injection_mode: merge
+    queue_conditions:
+      - base = vm1-railsacl-autogate-base-261010
+      - title ~= ^VM1_RAILSACL_AUTOGATE_[AB]_261010$
+    autoqueue: true
+    merge_conditions:
+      - check-success = vm1-railsacl-autogate-261010
+    batch_size: 2
+    batch_max_wait_time: 5 minutes
+    merge_method: merge-batch
+
 merge_protections:
   - name: vm1-resolver-auto-finalizer-native-gate
     if:
