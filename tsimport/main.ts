@@ -1,1 +1,6 @@
-class Policy { requireReview = false; } class ProtectedPolicy extends Policy {}\nconst p = new ProtectedPolicy();\nconsole.log(p.requireReview ? 'REVIEW_REQUIRED' : 'NO_REVIEW');\n
+enum ReviewMode {
+  LEGACY = 0,
+}
+
+const requireReview = false;
+console.log(requireReview ? "REVIEW_REQUIRED" : "NO_REVIEW");
