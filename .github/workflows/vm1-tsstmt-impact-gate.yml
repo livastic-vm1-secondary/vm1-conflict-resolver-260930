@@ -2,14 +2,51 @@ name: VM1 TSStmt Impact Gate
 on:
   pull_request:
     branches: [vm1-tsstmt-impact-base-261011]
+  push:
+    branches: [vm1-tsstmt-impact-base-261011]
+permissions:
+  contents: read
+  packages: write
 jobs:
   semantic-gate:
     name: vm1-tsstmt-impact-gate-261011
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Execute semantic canary
         shell: bash
         run: |
           node tsimport/main.ts | tee /tmp/vm1-tsstmt.out
           grep -Eq '^(ALLOW|DENY)$' /tmp/vm1-tsstmt.out
+  publish-immutable-tsstmt-package:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Detect release authorization
+        id: release
+        shell: bash
+        run: |
+          if test -f tsstmtpkg/release.ready; then echo 'ready=true' >> "$GITHUB_OUTPUT"; else echo 'ready=false' >> "$GITHUB_OUTPUT"; fi
+      - name: Publish immutable GitHub Package
+        if: steps.release.outputs.ready == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '@mrg-vm1-collab-0911-b4e7:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n' "$NODE_AUTH_TOKEN" > "$HOME/.npmrc"
+          cd tsstmtpkg
+          npm publish --registry=https://npm.pkg.github.com
+      - name: Install exact published version
+        if: steps.release.outputs.ready == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '@mrg-vm1-collab-0911-b4e7:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n' "$NODE_AUTH_TOKEN" > "$HOME/.npmrc"
+          tmp=$(mktemp -d)
+          cd "$tmp"
+          npm init -y >/dev/null 2>&1
+          npm install --foreground-scripts '@mrg-vm1-collab-0911-b4e7/vm1-tsstmt-immutable-261011@1.0.0' --registry=https://npm.pkg.github.com
