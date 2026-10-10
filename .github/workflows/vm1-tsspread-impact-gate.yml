@@ -1,0 +1,16 @@
+name: VM1 TypeScript spread impact gate
+on:
+  pull_request:
+    branches:
+      - vm1-tsspread-impact-base-261010
+
+jobs:
+  gate:
+    name: vm1-tsspread-impact-gate-261010
+    runs-on: ubuntu-latest
+    steps:
+      - name: Controlled automatic gate
+        run: |
+          echo "VM1 controlled automatic impact gate"
+          sleep 20
+          echo "VM1 gate complete"
