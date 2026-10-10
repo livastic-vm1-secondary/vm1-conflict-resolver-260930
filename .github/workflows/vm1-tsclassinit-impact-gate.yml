@@ -1,0 +1,15 @@
+name: VM1 TSClassInit Impact Gate
+on:
+  pull_request:
+    branches: [vm1-tsclassinit-impact-base-261010]
+jobs:
+  semantic-gate:
+    name: vm1-tsclassinit-impact-gate-261010
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute semantic canary
+        shell: bash
+        run: |
+          node tsimport/main.ts | tee /tmp/vm1-tsclassinit.out
+          grep -Eq '^(REVIEW_REQUIRED|NO_REVIEW)$' /tmp/vm1-tsclassinit.out
