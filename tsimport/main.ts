@@ -1,5 +1,6 @@
-const legacy = { requireReview: false };
+enum ReviewMode {
+  LEGACY = 0,
+}
 
-const policy = { requireReview: false };
-
-console.log(policy.requireReview ? "REVIEW_REQUIRED" : "NO_REVIEW");
+const requireReview = false;
+console.log(requireReview ? "REVIEW_REQUIRED" : "NO_REVIEW");
