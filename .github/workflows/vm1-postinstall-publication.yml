@@ -1,0 +1,45 @@
+name: VM1 postinstall publication chronology 261011
+
+on:
+  pull_request:
+    branches:
+      - vm1-npmovr-base-261009
+  push:
+    branches:
+      - vm1-npmovr-base-261009
+
+permissions:
+  contents: write
+
+jobs:
+  vm1-npmovr-never-261009:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harmless merge-queue gate
+        run: echo VM1_POSTINSTALL_GATE_OK_261011
+
+  publish-immutable-tag:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Detect publishable package
+        id: package
+        shell: bash
+        run: |
+          private=$(node -p "String(require('./pkg/package.json').private)")
+          echo "private=$private" >> "$GITHUB_OUTPUT"
+      - name: Create immutable canary tag once
+        if: steps.package.outputs.private == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="vm1-postinstall-v1.0.0-261011"
+          if existing=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" --jq '.object.sha' 2>/dev/null); then
+            echo "existing=$existing"
+            test "$existing" = "$GITHUB_SHA"
+          else
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/tags/$tag" -f sha="$GITHUB_SHA"
+          fi
