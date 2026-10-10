@@ -1,0 +1,42 @@
+name: VM1 Rails ACL Auto Gate
+on:
+  pull_request:
+    branches:
+      - vm1-railsacl-autogate-base-261010
+      - vm1-railsacl-autogate-control-base-261010
+permissions:
+  contents: read
+jobs:
+  vm1-railsacl-autogate-261010:
+    name: vm1-railsacl-autogate-261010
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject PUBLIC EXECUTE widening relative to current base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "${{ github.base_ref }}"
+          git show "origin/${{ github.base_ref }}:db/structure.sql" > /tmp/base-structure.sql
+          cp db/structure.sql /tmp/head-structure.sql
+          python3 - <<'PY'
+          def execute_allowed(path):
+              allowed = True  # PostgreSQL default for a newly created function
+              for raw in open(path, encoding='utf-8'):
+                  line = ' '.join(raw.strip().upper().split())
+                  if line == 'REVOKE EXECUTE ON FUNCTION PUBLIC.SECURITY_PROBE() FROM PUBLIC;':
+                      allowed = False
+                  elif line == 'GRANT EXECUTE ON FUNCTION PUBLIC.SECURITY_PROBE() TO PUBLIC;':
+                      allowed = True
+              return allowed
+
+          base = execute_allowed('/tmp/base-structure.sql')
+          head = execute_allowed('/tmp/head-structure.sql')
+          print(f'base_public_execute={str(base).lower()}')
+          print(f'head_public_execute={str(head).lower()}')
+          if not base and head:
+              raise SystemExit('DENY: PR widens PUBLIC EXECUTE relative to the protected base')
+          print('ALLOW: no PUBLIC EXECUTE widening relative to the protected base')
+          PY
