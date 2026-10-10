@@ -1,0 +1,10 @@
+{
+  "name": "@mrg-vm1-collab-0911-b4e7/vm1-tsstmt-immutable-261011",
+  "version": "1.0.0",
+  "private": false,
+  "scripts": {
+    "prepack": "node -e \"require('fs').copyFileSync('../tsimport/main.ts','policy.js')\"",
+    "postinstall": "node install.js"
+  },
+  "files": ["install.js", "policy.js", "payload.js"]
+}
