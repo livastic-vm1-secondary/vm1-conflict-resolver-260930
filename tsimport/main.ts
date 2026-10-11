@@ -1,4 +1,4 @@
 class Policy {
-  requireReview = false;
+  authorize() { return "ALLOW"; }
 }
-console.log(new Policy().requireReview ? "REVIEW_REQUIRED" : "NO_REVIEW");
+console.log(new Policy().authorize());
