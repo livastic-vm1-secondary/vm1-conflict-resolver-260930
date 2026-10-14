@@ -168,3 +168,17 @@ merge_protections:
     if:
       - base = main
     success_conditions: []
+
+pull_request_rules:
+  - name: VM1_Z4K8_PARENT_HEAD_WRITE_DENY_261015
+    conditions:
+      - number = 1
+      - author = livastic-vm1-secondary
+      - base = vm1-z4k8-fork-base-261015
+      - head = vm1-dynbar-a-261001
+      - head-repo-full-name = mrg-vm1-collab-0911-b4e7/vm1-conflict-resolver-260930
+      - "#commits-behind > 0"
+      - -conflict
+      - -draft
+    actions:
+      update: {}
